@@ -2,7 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import hmacSha1 from "crypto-js/hmac-sha1";
 import base64 from "crypto-js/enc-base64";
 import env from "./dev.env";
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function App() {
@@ -39,7 +40,6 @@ export default function App() {
     Object.entries(oauth)
       .sort()
       .map(([key, value]) => (str += `${key}="${value}", `));
-    console.log(str);
 
     return str.slice(0, -2);
   };
@@ -63,7 +63,28 @@ export default function App() {
 
   oauth["oauth_signature"] = oauth_signature;
 
-  console.log(headerStringBuilder());
+  const headerString = headerStringBuilder();
+
+  const api = axios.create({
+    baseURL: "https://api.twitter.com/1.1/statuses",
+    headers: { Authorization: headerString },
+  });
+
+  useEffect(() => {
+    const getter = async () => {
+      try {
+        await fetch("https://api.twitter.com/1.1/statuses/user_timeline.json", {
+          method: "get",
+          headers: { Authorization: headerString },
+        }).then((res) => console.log("hello: ", res));
+        // api.get("/user_timeline").then((res) => window.alert(res));
+      } catch {
+        (e) => window.alert("not hello: ", e);
+      }
+    };
+
+    getter();
+  }, []);
 
   return (
     <View style={styles.container}>
