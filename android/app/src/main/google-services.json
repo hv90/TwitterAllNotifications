@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1039101996094",
+    "firebase_url": "https://twitter-bootleg.firebaseio.com",
+    "project_id": "twitter-bootleg",
+    "storage_bucket": "twitter-bootleg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039101996094:android:e51334aeacdee2e506756f",
+        "android_client_info": {
+          "package_name": "com.twitterallnotifications"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1039101996094-4vhrr2cts461b0to8fnn62norq3bpv7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXLTLdhGbnnpMt6ef6sRDeFOU-R09nPhY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1039101996094-4vhrr2cts461b0to8fnn62norq3bpv7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

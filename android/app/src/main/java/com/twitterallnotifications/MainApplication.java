@@ -23,6 +23,8 @@ import expo.modules.permissions.PermissionsPackage;
 import expo.modules.filesystem.FileSystemPackage;
 import expo.modules.updates.UpdatesController;
 
+import com.google.firebase.FirebaseApp;
+
 import com.facebook.react.bridge.JSIModulePackage;
 import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 
@@ -86,6 +88,7 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    FirebaseApp.initializeApp(this);
     SoLoader.init(this, /* native exopackage */ false);
 
     if (!BuildConfig.DEBUG) {

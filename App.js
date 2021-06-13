@@ -10,10 +10,15 @@ import {
   headerStringBuilder,
   twitterPercentEncoder,
 } from "./helpers";
+import { LocalNotification } from "./android/app/src/services/LocalPushController";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 
 export default function App() {
+  const handleButtonPress = (source, text, createdAt) => {
+    LocalNotification(source, text, createdAt);
+  };
+
   const randomString = base64.stringify(
     utf8.parse(
       randomStringBuilder(
@@ -65,11 +70,17 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {tweets.map((tweet) => (
-        <>
+      {tweets.map((tweet, index) => (
+        <View key={index}>
           <Text>{`${tweet.source}: ${tweet.text}, ${tweet.created_at}`}</Text>
           <StatusBar style="auto" />
-        </>
+          <Button
+            title="Hello, hello"
+            onPress={() =>
+              handleButtonPress(tweet.source, tweet.text, tweet.created_at)
+            }
+          />
+        </View>
       ))}
     </View>
   );
