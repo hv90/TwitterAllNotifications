@@ -10,7 +10,7 @@ import {
   headerStringBuilder,
   twitterPercentEncoder,
 } from "./helpers";
-import { LocalNotification } from "./android/app/src/services/LocalPushController";
+import { LocalNotification } from "./services/LocalPushController";
 import React, { useRef, useEffect, useState } from "react";
 
 import BackgroundTask from "react-native-background-task";
@@ -96,8 +96,8 @@ const secondPlanTask = async () => {
 
 // ********************************************  App
 export default function App() {
-  const handleButtonPress = (source, text, createdAt) => {
-    LocalNotification(source, text, createdAt);
+  const handleButtonPress = (userName, userProfile, text, createdAt) => {
+    LocalNotification(userName, userProfile, text, createdAt);
   };
 
   /* 
@@ -108,8 +108,6 @@ export default function App() {
   /* const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
  */
-
-  console.log(typeof NativeModules);
 
   /*   const _handleAppStateChange = (nextAppState) => {
     if (
@@ -137,15 +135,15 @@ export default function App() {
       });
   };
 
-  const Section = ({ children, title, key }) => (
-    <View style={styles.sectionContainer} key={key}>
+  const Section = ({ children, title, rabo }) => (
+    <View style={styles.sectionContainer} key={rabo}>
       <Text style={styles.sectionTitle}>{title}</Text>
       <Text style={styles.sectionDescription}>{children}</Text>
     </View>
   );
 
   useEffect(() => {
-    // getter();
+    getter();
     // BackgroundTask.schedule();
     /* LockDetectionEmitter.addEventListener("LockStatusChange", (newStatus) => {
       console.log("status: ", newStatus);
@@ -159,30 +157,29 @@ export default function App() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {/* <StatusBar barStyle="dark-content" style={{ flex: 1 }} />
-      <ScrollView contentInsetAdjustmentBehavior="automatic"> */}
-      <View style={styles.container}>
-        <Text>This App works better when in background!</Text>
-        {/* {tweets &&
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <View style={styles.container}>
+          <Text>This App works better when in background!</Text>
+          {tweets &&
             tweets.map((tweet, index) => (
               <Section title={tweet.user.screen_name} key={index}>
                 {`${tweet.text}, ${tweet.created_at}`}
 
-                <StatusBar barStyle="light-content" />
                 <Button
                   title="Hello, hello"
-                  onPress={() =>
-                    handleButtonPress(
-                      tweet.source,
+                  onPress={() => {
+                    return handleButtonPress(
+                      tweet.user.name,
+                      tweet.user.profile_image_url_https,
                       tweet.text,
-                      tweet.created_at
-                    )
-                  }
+                      new Date(tweet.created_at).toLocaleString()
+                    );
+                  }}
                 />
               </Section>
-            ))} */}
-      </View>
-      {/* </ScrollView> */}
+            ))}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

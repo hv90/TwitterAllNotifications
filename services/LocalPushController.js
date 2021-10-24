@@ -5,14 +5,42 @@ PushNotification.configure({
   onNotification: function (notification) {
     console.log("LOCAL NOTIFICATION ==>", notification);
   },
+  onAction: function (notification) {
+    console.log("ACTION:", notification.action);
+    console.log("NOTIFICATION:", notification);
+
+    // process the action
+  },
   popInitialNotification: true,
   requestPermissions: true,
 });
 
 const lastTweets = [];
 
-export const LocalNotification = (source, text, createdAt) => {
+export const LocalNotification = (userName, userProfile, text, createdAt) => {
   const channel_id = "TUNChannel";
+
+  lastTweetsData = {
+    bigText: `${text} ${createdAt}`,
+    subText: createdAt,
+    title: userName,
+    largeIconUrl: userProfile,
+    message: text,
+  };
+
+  const data = {
+    channelId: channel_id, // (required) channelId, if the channel doesn't exist, notification will not trigger.
+    autoCancel: true,
+    bigText: text,
+    subText: createdAt,
+    title: userName,
+    largeIconUrl: userProfile,
+    message: text,
+    vibrate: true,
+    vibration: 300,
+    playSound: true,
+    soundName: "default",
+  };
 
   PushNotification.channelExists(channel_id, (exists) => {
     if (!exists) {
@@ -41,18 +69,7 @@ export const LocalNotification = (source, text, createdAt) => {
             },
             (created) => {
               /* console.log(`createChannel 2 returned '${created}'`); // (optional) callback returns whether the channel was created, false means it already existed. */
-              PushNotification.localNotification({
-                channelId: channel_id, // (required) channelId, if the channel doesn't exist, notification will not trigger.
-                autoCancel: true,
-                bigText: `${text} ${createdAt}`,
-                subText: text,
-                title: source,
-                message: text,
-                vibrate: true,
-                vibration: 300,
-                playSound: true,
-                soundName: "default",
-              });
+              PushNotification.localNotification(data);
             }
           );
         }
@@ -61,28 +78,10 @@ export const LocalNotification = (source, text, createdAt) => {
   });
 
   PushNotification.getDeliveredNotifications((notifications) => {
-    lastTweets.push({
-      bigText: `${text} ${createdAt}`,
-      subText: text,
-      title: source,
-      message: text,
-    });
+    lastTweets.push(lastTweetsData);
     /* console.log("length: ", notifications.length);
     console.log("tweets: ", lastTweets.length); */
-    if (lastTweets.length <= 47) {
-      PushNotification.localNotification({
-        channelId: channel_id, // (required) channelId, if the channel doesn't exist, notification will not trigger.
-        autoCancel: true,
-        bigText: `${text} ${createdAt}`,
-        subText: text,
-        title: source,
-        message: text,
-        vibrate: true,
-        vibration: 300,
-        playSound: true,
-        soundName: "default",
-      });
-    } else {
+    if (lastTweets.length > 47) {
       PushNotification.removeAllDeliveredNotifications();
       PushNotification.deleteChannel(channel_id);
       PushNotification.createChannel(
@@ -92,18 +91,7 @@ export const LocalNotification = (source, text, createdAt) => {
         },
         (created) => {
           /* console.log(`createChannel 3 returned '${created}'`); */ // (optional) callback returns whether the channel was created, false means it already existed.
-          PushNotification.localNotification({
-            channelId: channel_id, // (required) channelId, if the channel doesn't exist, notification will not trigger.
-            autoCancel: true,
-            bigText: `${text} ${createdAt}`,
-            subText: text,
-            title: source,
-            message: text,
-            vibrate: true,
-            vibration: 300,
-            playSound: true,
-            soundName: "default",
-          });
+          PushNotification.localNotification(data);
         }
       );
     }
