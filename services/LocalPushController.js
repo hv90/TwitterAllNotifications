@@ -44,7 +44,11 @@ export const LocalNotification = (userName, userProfile, text, createdAt) => {
 
   PushNotification.channelExists(channel_id, (exists) => {
     if (!exists) {
-      /* console.log(`exists = ${exists}`); */
+      console.log(`exists = ${exists}`);
+      lastTweets.forEach((lastTweet) =>
+        console.log(`last tweets: ${lastTweet}`)
+      );
+
       PushNotification.createChannel(
         {
           channelId: channel_id, // (required)
@@ -70,6 +74,7 @@ export const LocalNotification = (userName, userProfile, text, createdAt) => {
             (created) => {
               /* console.log(`createChannel 2 returned '${created}'`); // (optional) callback returns whether the channel was created, false means it already existed. */
               PushNotification.localNotification(data);
+              lastTweets.push(lastTweetsData);
             }
           );
         }
@@ -78,7 +83,6 @@ export const LocalNotification = (userName, userProfile, text, createdAt) => {
   });
 
   PushNotification.getDeliveredNotifications((notifications) => {
-    lastTweets.push(lastTweetsData);
     /* console.log("length: ", notifications.length);
     console.log("tweets: ", lastTweets.length); */
     if (lastTweets.length > 47) {

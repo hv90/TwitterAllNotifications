@@ -1,12 +1,4 @@
 {
   "name": "TwitterUpdateNotifications",
-  "displayName": "TwitterUpdateNotifications",
-  "expo": {
-    "name": "TwitterUpdateNotifications",
-    "slug": "TwitterUpdateNotifications",
-    "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
-  }
+  "displayName": "TwitterUpdateNotifications"
 }
